@@ -6,5 +6,5 @@ do
 	time=$(date '+%D +%T')
 	echo "$time"
 	sleep 1
-	iwconfig wlan | grep -i Link
+	iwconfig wlan0 | grep -i Link
 done
