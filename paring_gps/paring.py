@@ -8,11 +8,13 @@ p_g = compile("      <trkpt lat=\"{}\" lon=\"{}\">\n")
 p_t = compile("        <time>{}T{}Z</time>\n")
 p_t2 = compile("{} +{}\n")
 p_sig = compile("          Link Quality={}/70  Signal level={} dBm  \n")
+p_essid = compile("wlan0     IEEE 802.11  ESSID:{}  \n")
 
 list_g = []
 list_t = []
 list_t2 = []
 list_sig = []
+
 with open("log_parsed.csv", 'w') as file:
     writer = csv.writer(file)
     writer.writerow(['Time(d)','Time(t)', 'Link Quality(/70)','Signal Level(-100)', 'lat', 'lon'])
@@ -40,7 +42,7 @@ with open("log_parsed.csv", 'w') as file:
         if idx>=len(list_t):
             break
         result_t2 = p_t2.parse(lines[i])
-        result_sig = p_sig.parse(lines[i])
+        result_essid = p_essid.parse(lines[i])
 
         if result_t2 != None:
             # print(result_t2[0], result_t2[1])
@@ -49,9 +51,13 @@ with open("log_parsed.csv", 'w') as file:
                 idx += 1
                 flag=1
 
-        if result_sig != None:
-            if flag==1:
-                list_sig.append((result_sig[0], result_sig[1]))
+        if result_essid == "\"halow_demo\"" and flag == 1:
+            flag=2
+            
+        if flag==2:
+            list_sig.append((result_essid[0], result_essid[1]))
+            flag = 0
+            
             
 
     for i in range(len(list_t)):
