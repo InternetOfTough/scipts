@@ -1,6 +1,3 @@
-juno
-
-
 ## scripts
 1. iwconfig-logger.sh
    input :
